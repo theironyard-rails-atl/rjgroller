@@ -20,7 +20,6 @@ def guessing_game
       else
         puts "Too High"
       end
-      puts
       guesses -= 1
       puts "You have #{guesses} remaining guesses"
       puts
@@ -29,9 +28,3 @@ def guessing_game
     end
   end
 end
-
-
-
-# 7
-# if == sn -> win
-# if == 0 -> lose
