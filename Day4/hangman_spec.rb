@@ -13,6 +13,13 @@ describe(Hangman) do
     assert_equal game.guess("a"), false
   end
 
+  it "removes letters from available letters after a guess" do
+    game = Hangman.new("Banana")
+    starting = game.available_letters
+    game.guess(starting.first)
+    assert_equal game.available_letters.count, starting.count - 1
+  end
+
   it "can be solved by guessing the word"
 
   it "is over when you run out of guesses"

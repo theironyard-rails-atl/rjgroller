@@ -31,6 +31,10 @@ attr_reader :misses_remaining
     end
   end
 
+  def available_letters
+    ('a'..'z').to_a - @guessed
+  end
+
   def finished?
     won? || lost?
   end
