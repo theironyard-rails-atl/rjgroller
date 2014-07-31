@@ -24,6 +24,7 @@ attr_reader :misses_remaining
   def guess(letter)
     #TODO - Clean up
     # Return if true if correct guess
+    letter.downcase!
     if @answer.include?(letter)
       @guessed.push(letter)
       true

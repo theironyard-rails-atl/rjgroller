@@ -42,7 +42,7 @@ describe(Hangman) do
   end
 
   it "is over after 6 bad guesses" do
-    game = Hangman.new("at")
+    game = Hangman.new("up")
     ('a'..'f').each { |letter| game.guess(letter) }
     assert_equal true, game.finished?
     assert_equal true, game.lost?
