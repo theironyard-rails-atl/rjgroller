@@ -22,11 +22,16 @@ attr_reader :misses_remaining
   end
 
   def guess(letter)
-    @guessed.push(letter)
+    #TODO - Clean up
     # Return if true if correct guess
     if @answer.include?(letter)
+      @guessed.push(letter)
       true
     else
+      unless @guessed.include?(letter)
+        @guessed.push(letter)
+        @misses_remaining -= 1
+      end
       false
     end
   end
