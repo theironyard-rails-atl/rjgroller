@@ -14,6 +14,6 @@ if answer == "y"
   puts "Enter letter: "
   letter = gets.chomp[0].downcase
   testrun.print_specific(letter)
-lelse
+else
   exit
 end
