@@ -5,8 +5,16 @@ class LetterCounter
     @count_of_letters = Hash.new
   end
 
+  # def letters_to_hash
+  #   @letters.each { |letter| @count_of_letters[letter] = 0 }
+  # end
+
   def letters_to_hash
-    @letters.each { |letter| @count_of_letters[letter] = 0 }
+    @letters.each do |letter|
+      if letter =~ /[[:alpha:]]/
+        @count_of_letters[letter] = 0
+      end
+    end
   end
 
   def letter_count_to_hash
