@@ -36,6 +36,16 @@ class Hand
     @value
   end
 
+  def to_s
+    @hand.join(" ")
+  end
+
+  def blackjack?
+  end
+
+  def busted?
+  end
+
 end
 
 def deal

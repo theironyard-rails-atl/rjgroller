@@ -6,7 +6,7 @@ class Card
   attr_reader :suit
   attr_reader :rank
 
-  def initialize(suit, rank)
+  def initialize(rank, suit)
     if $suits.include?(suit) && $ranks.include?(rank)
       @suit = suit
       @rank = rank
@@ -14,7 +14,7 @@ class Card
   end
 
   def to_s
-    "The #{@rank} of #{@suit}s"
+    "#{@rank}#{@suit}"
   end
 end
 
@@ -26,7 +26,7 @@ class Deck
     @deck = Array.new
     $ranks.each do |rank|
       $suits.each do |suit|
-        @deck << Card.new(suit, rank)
+        @deck << Card.new(rank,suit)
       end
     end
   end
