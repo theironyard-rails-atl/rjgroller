@@ -3,11 +3,13 @@ require "./cards.rb"
 
 class Hand
   # add_card, get_value, draw
+
+  @@bj_values = (1..9).to_a + Array.new(4, 10)
+  @@card_values = $ranks.zip(@@bj_values).to_h
+
   attr_accessor :hand
 
   def initialize
-    @bj_values = (1..9).to_a + Array.new(4, 10)
-    @card_values = $ranks.zip(@bj_values).to_h
     @hand = Array.new
     @value = 0
     @has_ace = false
@@ -18,9 +20,10 @@ class Hand
   end
 
   def get_value
+    @value = 0
     @hand.each do |card|
-      @value += @card_values[card.rank]
-      if card.rank == 'A'
+      @value += @@card_values[card.rank]
+      if card.rank == :A
         @has_ace = true
       end
     end

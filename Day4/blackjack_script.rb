@@ -1,5 +1,6 @@
 require "./cards.rb"
 require "./blackjack.rb"
+require "pry"
 
 deck = Deck.new
 deck.shuffle
@@ -16,3 +17,5 @@ puts "Dealer's Hand #{dealer.hand}"
 
 puts player.get_value
 puts dealer.get_value
+
+binding.pry

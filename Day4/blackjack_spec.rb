@@ -1,23 +1,25 @@
-%w{blackjack minitest/autorun}.each { |x| require x }
+require "./cards.rb"
+require "./blackjack.rb"
+require "minitest/autorun"
 
 describe Card do
-  it "knows the values of number cards" do
-    2.upto(10) do |x|
-      card = Card.new(x, :S)
-      assert_equal card.value, x
-    end
+
+  it "knows rank of a number" do
+    card = Card.new(2, :H)
+    assert_equal 2, card.rank
   end
 
-  it "knows the values of face cards" do
+  it "knows rank of a face card" do
     [:K, :Q, :J].each do |rank|
       card = Card.new(rank, :H)
-      assert_equal card.value, 10
+      assert_equal rank, card.rank
     end
   end
 
-  it "knows the value of an ace" do
+  it "knows its rank" do
     card = Card.new(:A, :D)
-    assert_equal card.value, 1
+    rank = card.rank
+    assert_equal :A, rank
   end
 end
 
@@ -33,6 +35,13 @@ describe Deck do
   it "knows how many cards are left after drawing" do
     @deck.draw
     assert_equal @deck.cards.count, 51
+  end
+
+  it "knows the values of the hand" do # need to update this assert
+    2.upto(10) do |x|
+      card = Card.new(x, :S)
+      assert_equal card.value, x
+    end
   end
 
   it "tracks which cards have been drawn and which remain" do
