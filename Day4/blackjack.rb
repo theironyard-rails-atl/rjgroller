@@ -41,9 +41,11 @@ class Hand
   end
 
   def blackjack?
+    @value == 21
   end
 
   def busted?
+    @value > 21
   end
 
 end

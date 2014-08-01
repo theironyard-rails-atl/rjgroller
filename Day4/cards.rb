@@ -20,22 +20,27 @@ end
 
 class Deck
 
-  attr_reader :deck
+  attr_reader :cards
 
   def initialize
-    @deck = Array.new
+    @cards = Array.new
     $ranks.each do |rank|
       $suits.each do |suit|
-        @deck << Card.new(rank,suit)
+        @cards << Card.new(rank,suit)
       end
     end
   end
 
   def shuffle
-    @deck.shuffle!
+    @cards.shuffle!
   end
 
   def deal_card
-    @deck.pop
+    @cards.pop
   end
+
+  def to_s
+    @cards.join(" ")
+  end
+
 end
