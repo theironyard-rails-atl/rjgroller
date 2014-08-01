@@ -2,21 +2,14 @@ require "./cards.rb"
 require "./blackjack.rb"
 require "pry"
 
-deck = Deck.new
-deck.shuffle
+game = Blackjack.new
+game.deal
 
-player = Hand.new
-dealer = Hand.new
+if game.choice = 2
+  game.stand
+else
+  game.hit
 
-player.add_card(deck.deal_card)
-player.add_card(deck.deal_card)
-puts dealer.add_card(deck.deal_card)
-puts dealer.add_card(deck.deal_card)
-puts player.hand.to_s
-puts "Dealer's Hand #{dealer.hand}"
-
-puts player.get_value
-puts dealer.get_value
 
 
 

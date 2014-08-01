@@ -1,8 +1,8 @@
 require "./cards.rb"
-# score, outcome, in_play, deck, player, dealer
+require "pry"
+# score, outcome, in_play, deck, player, @dealer
 
 class Hand
-  # add_card, get_value, draw
 
   @@bj_values = (1..9).to_a + Array.new(4, 10)
   @@card_values = $ranks.zip(@@bj_values).to_h
@@ -50,39 +50,85 @@ class Hand
 
 end
 
-def deal
+class BlackJack
 
-  # Create hands
-  player = Hand.new
-  dealer = Hand.new
+  attr_reader :choice
 
-  # prepare a new deck
-  deck = Deck.new
-  deck.shuffle
+  def initialize
+    @deck = Deck.new
+    @deck.shuffle
+    @choice
+    @player
+    @dealer
+  end
 
-  #test
-  player.add_card(deck.deal_card)
-  dealer.add_card(deck.deal_card)
+  def display
+    msg = "Dealer is showing #{@dealer.hand[1]}"
+    puts msg
 
-  # Deal 2 cards each to a player and the dealer
-  # 2.times do |x|
-  #   player.add_card(deck.deal_card)
-  #   dealer.add_card(deck.deal_card)
+    msg = "You have #{@player.to_s}"
+    puts msg
+  end
+
+  def prompt
+    # Prompt user for action
+    msg = "Woud you like to stand (1) or hit (2)?"
+    puts msg
+    @choice = gets.to_int
+    @choice
+  end
+
+  def deal
+    # Message to @player
+    msg = "Dealing cards..."
+    puts msg
+
+    # Create hands
+    @player = Hand.new
+    @dealer = Hand.new
+
+    # Deal 2 cards each to a @player and the @dealer
+    2.times do |x|
+      @player.add_card(deck.deal_card)
+      @dealer.add_card(deck.deal_card)
+    end
+
+    # Display user input
+    display
+    prompt
+  end
+
+  def dlr_stands?
+    @dealer.get_value >= 17
+  end
+
+  def hit
+    @player.add_card(deck.deal_card)
+    if @player.blackjack?
+      msg = "You win!"
+      puts msg
+    elsif @player.busted?
+      msg = "You lose."
+      print msg
+    else
+      display
+      prompt
+    end
+  end
+
+  def stand
+  end
+  #
+  # def split
+  # end
+  #
+  # def double
   # end
 
+  #
+  # def surrender
+  # end
+  # def reshuffle?
+  #   deck.count < 20
+  # end
 end
-#
-# def hit
-# end
-#
-# def split
-# end
-#
-# def double
-# end
-#
-# def stand
-# end
-#
-# def surrender
-# end
