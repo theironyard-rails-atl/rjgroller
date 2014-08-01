@@ -1,19 +1,18 @@
-require ."/cards.rb"
+require "./cards.rb"
 require "./blackjack.rb"
 
-# class BlackJack
-# #move to script
-# # score, outcome, in_play, deck, player, dealer
-# # Deal, Hit, Stand, Surrender
-# end
-
 deck = Deck.new
+deck.shuffle
 
-# Deal a new game
 player = Hand.new
 dealer = Hand.new
 
-# Deal cards for hand
-2.times do
-  player.add_card(deck.deal_card)
-  dealer.add_card(deck.deal_card)
+player.add_card(deck.deal_card)
+player.add_card(deck.deal_card)
+puts dealer.add_card(deck.deal_card)
+puts dealer.add_card(deck.deal_card)
+puts "Player's Hand #{player.hand}"
+puts "Dealer's Hand #{dealer.hand}"
+
+puts player.get_value
+puts dealer.get_value

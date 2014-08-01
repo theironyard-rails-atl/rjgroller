@@ -1,5 +1,5 @@
 $suits = %i{C S H D}
-$ranks = (2..10).to_a + %i{J Q K A}
+$ranks = [:A] + (2..10).to_a + %i{J Q K}
 
 class Card
   # suit, rank
@@ -14,7 +14,7 @@ class Card
   end
 
   def to_s
-    "#{@rank} of #{@suit}s"
+    "The #{@rank} of #{@suit}s"
   end
 end
 
