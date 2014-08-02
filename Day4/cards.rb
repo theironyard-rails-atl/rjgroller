@@ -1,5 +1,5 @@
 $suits = %i{C S H D}
-$ranks = [:A] + (2..10).to_a + %i{J Q K}
+$ranks = (2..10).to_a + %i{J Q K A}
 
 class Card
   # suit, rank

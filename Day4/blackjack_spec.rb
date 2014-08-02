@@ -1,5 +1,5 @@
 require "./cards.rb"
-require "./blackjack.rb"
+require "./hand.rb"
 require "minitest/autorun"
 
 describe Card do
@@ -65,10 +65,10 @@ describe Hand do
 
   it "computes values with aces" do
     @hand.add_card(Card.new(:A, :H), Card.new(:K, :S))
-    assert_equal @hand.get_value, 21
+    assert_equal 21, @hand.get_value
 
     @hand.add_card(Card.new(5, :S))
-    assert_equal @hand.get_value, 16
+    assert_equal 16, @hand.get_value
   end
 
   it "can bust" do
@@ -89,7 +89,7 @@ describe Hand do
 
   it "knows the value of a hand with multiple aces" do
     @hand.add_card(Card.new(:A, :H), Card.new(:A, :S))
-    assert_equal 13, @hand.get_value
+    assert_equal 12, @hand.get_value
   end
 
 end

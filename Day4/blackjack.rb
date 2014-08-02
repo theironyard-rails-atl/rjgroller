@@ -1,53 +1,6 @@
 require "./cards.rb"
+require "./hand.rb"
 require "pry"
-# score, outcome, in_play, deck, player, dealer
-
-class Hand
-
-  @@bj_values = (1..9).to_a + Array.new(4, 10)
-  @@card_values = $ranks.zip(@@bj_values).to_h
-
-  attr_accessor :hand
-
-  def initialize
-    @hand = Array.new
-    @has_ace = false
-  end
-
-  def add_card(*cards)
-    cards.each { |card| @hand << card }
-  end
-
-  def get_value
-    @value = 0
-    @hand.each do |card|
-      @value += @@card_values[card.rank]
-      if card.rank == :A
-        @has_ace = true
-      end
-    end
-    # Calculate value of hand if there is an ace - need to handle multiple aces
-    if @has_ace
-      if @value + 10 <= 21
-        @value += 10
-      end
-    end
-    @value
-  end
-
-  def to_s
-    @hand.join(", ")
-  end
-
-  def blackjack?
-    get_value == 21
-  end
-
-  def busted?
-    get_value > 21
-  end
-
-end
 
 class BlackJack
 
