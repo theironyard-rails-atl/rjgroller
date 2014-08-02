@@ -1,6 +1,6 @@
 require "./cards.rb"
 require "pry"
-# score, outcome, in_play, deck, player, @dealer
+# score, outcome, in_play, deck, player, dealer
 
 class Hand
 
@@ -11,7 +11,6 @@ class Hand
 
   def initialize
     @hand = Array.new
-    @value = 0
     @has_ace = false
   end
 
@@ -27,7 +26,7 @@ class Hand
         @has_ace = true
       end
     end
-    # Calculate value of hand if there is an ace
+    # Calculate value of hand if there is an ace - need to handle multiple aces
     if @has_ace
       if @value + 10 <= 21
         @value += 10
@@ -37,7 +36,7 @@ class Hand
   end
 
   def to_s
-    @hand.join(" ")
+    @hand.join(", ")
   end
 
   def blackjack?
@@ -57,9 +56,6 @@ class BlackJack
   def initialize
     @deck = Deck.new
     @deck.shuffle
-    @choice
-    @player
-    @dealer
   end
 
   def display
@@ -87,7 +83,7 @@ class BlackJack
     @player = Hand.new
     @dealer = Hand.new
 
-    # Deal 2 cards each to a @player and the @dealer
+    # Deal 2 cards each to a player and the dealer
     2.times do |x|
       @player.add_card(deck.deal_card)
       @dealer.add_card(deck.deal_card)
@@ -117,6 +113,9 @@ class BlackJack
   end
 
   def stand
+    until dlr_stands? or @dealer.busted?
+      @player.get_value > @dealer.get_value
+
   end
   #
   # def split

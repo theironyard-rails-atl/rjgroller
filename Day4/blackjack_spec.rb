@@ -4,6 +4,8 @@ require "minitest/autorun"
 
 describe Card do
 
+  # need to test for multiple aces
+
   it "knows rank of a number" do
     card = Card.new(2, :H)
     assert_equal 2, card.rank

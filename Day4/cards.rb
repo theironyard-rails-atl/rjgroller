@@ -40,7 +40,7 @@ class Deck
   end
 
   def to_s
-    @cards.join(" ")
+    @cards.join(", ")
   end
 
 end
