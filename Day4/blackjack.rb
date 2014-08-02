@@ -14,8 +14,8 @@ class Hand
     @has_ace = false
   end
 
-  def add_card(card)
-    @hand << card
+  def add_card(*cards)
+    cards.each { |card| @hand << card }
   end
 
   def get_value
@@ -40,11 +40,11 @@ class Hand
   end
 
   def blackjack?
-    @value == 21
+    get_value == 21
   end
 
   def busted?
-    @value > 21
+    get_value > 21
   end
 
 end
@@ -115,7 +115,7 @@ class BlackJack
   def stand
     until dlr_stands? or @dealer.busted?
       @player.get_value > @dealer.get_value
-
+    end
   end
   #
   # def split

@@ -21,9 +21,11 @@ end
 class Deck
 
   attr_reader :cards
+  attr_reader :drawn_cards
 
   def initialize
     @cards = Array.new
+    @drawn_cards = Array.new
     $ranks.each do |rank|
       $suits.each do |suit|
         @cards << Card.new(rank,suit)
@@ -36,7 +38,9 @@ class Deck
   end
 
   def deal_card
-    @cards.pop
+    card = @cards.pop
+    @drawn_cards << card
+    card
   end
 
   def to_s
