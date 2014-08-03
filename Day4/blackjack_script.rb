@@ -3,35 +3,50 @@ require "pry"
 
 # Initialize the Game
 game = Blackjack.new
-game.deal
 
-# Begin a Hand
-# player makes bet or exits games
-until !game.continue? || game.wallet_empty?
+system "clear"
+puts
+puts "Welcome to a Blackjack Table! Let's play."
+puts
+
+# Play until player does not wish to continue or has an empty wallet
+until !game.continue || game.wallet_empty?
 
   # Does deck need a reshuffle?
   game.reshuffle?
 
-  # Deal cards
+  # Deal and show cards
   game.deal
+  puts
+  game.display
+  puts
 
-  if !game.blackjack
+  # Skip to resolution if dealer or player has a blackjack
+  if !game.blackjacks?
 
-    # Player goes
-    until game.player.stands? || game.player.busted?
-      game.dispay
-      game.prompt
-      game.hit(@player)
-    end
-
-    if game.player.stands?
-
-      # Dealer Goes
-      until game.dealer.stands || game.dealer.busted?
-        game.display # show dealer's hidden card
-        game.hit(@dealer)
+    # If no blackjacks then Player goes first
+    until game.player.hand.stand || game.player.hand.busted? do
+      if !game.hit?
+        game.player.hand.stand = true
+      else
+        game.player.hand.add_card(game.deck.deal_card)
       end
     end
+
+    # if player stood then...
+    if game.player.hand.stand?
+
+      # ...the Dealer Goes
+      until game.dealer.stand? || game.dealer.busted? do
+        game.display # show dealer's hidden card
+        game.dealer.add_card(game.deck.deal_card)
+      end
+    end
+
+  # else
+  #   if game.dealer.blackjack?
+  #     "Dealer has a blakjack!"
+
   end
 
   # Round is Resolved

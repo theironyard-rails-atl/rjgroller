@@ -6,10 +6,12 @@ class Hand
   @@card_values = $ranks.zip(@@bj_values).to_h
 
   attr_accessor :hand
+  attr_accessor :stand
 
   def initialize
     @hand = Array.new
     @aces = 0
+    @stand = false
   end
 
   def add_card(*cards)
@@ -39,7 +41,7 @@ class Hand
   end
 
   def blackjack?
-    get_value == 21
+    get_value == 21 && @hand.count == 2
   end
 
   def busted?
@@ -47,7 +49,7 @@ class Hand
   end
 
   def stand?
-    # Modify to be stand for both player and dealer
+    # Dealer/Player autostand
     get_value >= 17
   end
 
