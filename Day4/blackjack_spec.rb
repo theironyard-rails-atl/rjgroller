@@ -1,5 +1,4 @@
-require "./cards.rb"
-require "./hand.rb"
+%w{cards hand player}.each { |fname| require "./#{fname}.rb" }
 require "minitest/autorun"
 
 describe Card do
@@ -90,6 +89,17 @@ describe Hand do
   it "knows the value of a hand with multiple aces" do
     @hand.add_card(Card.new(:A, :H), Card.new(:A, :S), Card.new(:A, :C))
     assert_equal 13, @hand.get_value
+  end
+
+end
+
+describe Player do
+  def setup
+    @player = Player.new(100)
+  end
+
+  it "has a starting wallet of 100" do
+    assert_equal 100, @player.wallet
   end
 
 end
