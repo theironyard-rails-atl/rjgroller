@@ -3,8 +3,9 @@ require "pry"
 
 class Player
 
-  attr_reader :wallet
+  attr_accessor :wallet
   attr_reader :wager
+  attr_reader :hand
 
   def initialize(starting_money)
     @wallet = starting_money
@@ -25,7 +26,7 @@ class Player
     @wager
   end
 
-  def wallet
+  def show_wallet
     "You have $#{@wallet} in your wallet"
   end
 

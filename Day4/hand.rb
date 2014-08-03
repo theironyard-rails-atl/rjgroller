@@ -32,15 +32,6 @@ class Hand
       @aces -= 1
     end
     @value
-    # Modify hand value for Aces
-    # unless @aces.zero? do
-    #   @aces.times do |ace|
-    #     if @value >= 21
-    #       @value -= 10
-    #     end
-    #   end
-    # end
-    # @value
   end
 
   def to_s
@@ -53,6 +44,11 @@ class Hand
 
   def busted?
     get_value > 21
+  end
+
+  def stand?
+    # Modify to be stand for both player and dealer
+    get_value >= 17
   end
 
 end

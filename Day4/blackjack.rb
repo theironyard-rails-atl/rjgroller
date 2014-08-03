@@ -15,6 +15,7 @@ class Blackjack
     @deck = Deck.new
     @deck.shuffle
     @player = Player.new(100)
+    @invalid_msg = "Please enter a valid response."
   end
 
   def display_cards
@@ -29,12 +30,22 @@ class Blackjack
 
   end
 
+  def wallet_empty?
+    @player.wallet == 0
+  end
+
   def prompt
     # Prompt user for action
-    msg = "Woud you like to stand (1) or hit (2)?"
+    rxp = /[sS|hH]/
+    msg = "Woud you like to (S)tand or (H)it?"
     puts msg
-    @choice = gets.to_int
-    @choice
+    choice = gets.chomp[0]
+    until rxp =~ choice
+      puts @invalid_msg
+      msg
+      choice = gets.chomp[0]
+    end
+    choice
   end
 
   def deal
@@ -55,8 +66,8 @@ class Blackjack
     end
 
     # Display user input
-    if dealer.blackjack?
-      resolve_round
+    if @dealer.blackjack? || @player.blackjack?
+
     else
       display
       prompt
@@ -66,24 +77,18 @@ class Blackjack
     @dealer.get_value >= 17
   end
 
-  def hit
-    @player.add_card(deck.deal_card)
-    if @player.blackjack?
-      msg = "You win!"
-      puts msg
-    elsif @player.busted?
-      msg = "You lose."
-      print msg
-    else
-      display
-      prompt
-    end
+  def hit(person)
+    person.add_card(deck.deal_card)
+    display
+    prompt
   end
 
   def stand
-    until dlr_stands? or @dealer.busted?
-      @player.get_value > @dealer.get_value
-    end
+      true
+  end
+
+  def blackjacks?
+      @dealer.blackjack? || @player.hand.blackjack?
   end
 
   def continue?
@@ -92,25 +97,29 @@ class Blackjack
     puts msg
     choice = gets.chomp[0]
     until rxp === choice
-      puts "Please enter a valid response."
+      puts @invalid_msg
       msg
       choice = gets.chomp[0]
     end
     choice == "y" ? true : false
   end
 
-  # def resolve_round
-  #   if player.get_value == dealer.get_value
-  #     @resolution = :push
-  #   elsif player.get_value > dealer.get_value
-  #     @
-  #   else
-  #
-  #   end
-  # end
+  def resolve_round
+    if @player.busted? || @player.get_value < @dealer.get_value
+      @player.wallet -= @player.wager
+      puts "You lost this round."
+    elsif @dealer.busted? || @player.get_value > @dealer.get_value
+      @player.wallet += @player.wager
+      puts "You won this round."
+    else
+      puts "Push - no winner this round."
+    end
+    @player.show_wallet
+  end
 
   def end_game
     msg = "Your final winnings are: #{@player.wallet}. Thanks for playing!"
+    self.destroy!
     exit
   end
 
