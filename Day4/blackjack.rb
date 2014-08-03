@@ -1,4 +1,5 @@
 %w{cards hand player}.each { |fname| require "./#{fname}.rb" }
+require "pry"
 
 class Blackjack
 
@@ -18,11 +19,15 @@ class Blackjack
   end
 
   def display
-    msg = "Dealer is showing #{@dealer.hand[1]}"
+    if @dealer.blackjack? || @player.hand.stand
+      msg = "Dealer has #{@dealer.to_s}"
+    else
+      msg = "Dealer is showing #{@dealer.hand[1]}"
+    end
     puts msg
-
     msg = "You have #{@player.hand.to_s}"
     puts msg
+    puts
   end
 
   def wallet_empty?
@@ -32,7 +37,7 @@ class Blackjack
   def hit?
     # Prompt user for action
     rxp = /[sS|hH]/
-    msg = "Woud you like to (S)tand or (H)it?"
+    msg = "Would you like to (S)tand or (H)it?"
     puts msg
     choice = gets.upcase.chomp[0]
     until rxp =~ choice
@@ -49,6 +54,7 @@ class Blackjack
 
     msg = "Dealing cards..."
     puts msg
+    puts
 
     # Create hands
     @player.hand = Hand.new
@@ -59,10 +65,6 @@ class Blackjack
       @player.hand.add_card(deck.deal_card)
       @dealer.add_card(deck.deal_card)
     end
-  end
-
-  def hit(person)
-    person.hand.add_card(deck.deal_card)
   end
 
   def blackjacks?
@@ -83,21 +85,41 @@ class Blackjack
   end
 
   def resolve_round
-    if @player.hand.busted? || @player.hand.get_value < @dealer.get_value
+    win_msg = "You win this round."
+    lose_msg = "Dealer wins this round."
+    push_msg = "A push! No winner this round."
+    if blackjacks?
+      if @player.hand.blackjack? == @dealer.blackjack?
+        puts "Blackjack! But wait you aren't alone. " + push_msg
+      elsif @dealer.blackjack?
+        puts "Dealer has a blackjack. " + lose_msg
+        @player.wallet -= @player.wager
+      else
+        puts "Blackjack! " + win_msg
+        @player.wallet += @player.wager * 1.5
+      end
+    elsif @player.hand.busted?
+      puts "You busted. " + lose_msg
       @player.wallet -= @player.wager
-      puts "You lost this round."
-    elsif @dealer.busted? || @player.hand.get_value > @dealer.get_value
+    elsif  @dealer.busted?
+      puts "Dealer busted. " + win_msg
       @player.wallet += @player.wager
-      puts "You won this round."
+    elsif @player.hand.get_value < @dealer.get_value
+      puts lose_msg
+      @player.wallet -= @player.wager
+    elsif @player.hand.get_value > @dealer.get_value
+      puts win_msg
+      @player.wallet += @player.wager
     else
       puts "Push - no winner this round."
     end
-    @player.show_wallet
+    puts
+    puts @player.show_wallet
+    puts
   end
 
   def end_game
     msg = "Your final winnings are: #{@player.wallet}. Thanks for playing!"
-    self.destroy!
     exit
   end
 
@@ -109,11 +131,7 @@ class Blackjack
     end
   end
 
-  # def split
-  # end
-  # def double
-  # end
-  # def surrender
-  # end
+  # Additional blackjack actions for future adds: insurance, surrender, split, double
+  # Allow for different dealer logic (soft 17)
 
 end

@@ -10,16 +10,14 @@ puts "Welcome to a Blackjack Table! Let's play."
 puts
 
 # Play until player does not wish to continue or has an empty wallet
-until !game.continue || game.wallet_empty?
+until !game.continue
 
   # Does deck need a reshuffle?
   game.reshuffle?
 
   # Deal and show cards
   game.deal
-  puts
   game.display
-  puts
 
   # Skip to resolution if dealer or player has a blackjack
   if !game.blackjacks?
@@ -30,27 +28,33 @@ until !game.continue || game.wallet_empty?
         game.player.hand.stand = true
       else
         game.player.hand.add_card(game.deck.deal_card)
+        game.display
       end
     end
 
-    # if player stood then...
-    if game.player.hand.stand?
+    # If player stood then...
+    if game.player.hand.stand
+      game.display
 
       # ...the Dealer Goes
       until game.dealer.stand? || game.dealer.busted? do
-        game.display # show dealer's hidden card
+        puts "Dealer hits..."
         game.dealer.add_card(game.deck.deal_card)
+        game.display
       end
     end
-
-  # else
-  #   if game.dealer.blackjack?
-  #     "Dealer has a blakjack!"
-
   end
 
-  # Round is Resolved
+  # Round Resolution
   game.resolve_round
-  game.continue?
 
+  # Check wallet and ask to continue
+  if game.wallet_empty?
+    puts "You are out of money, thanks for playing. Goodbye."
+    exit
+  else
+    game.continue?
+    system "clear"
+  end
 end
+game.end_game

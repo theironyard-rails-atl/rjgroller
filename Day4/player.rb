@@ -1,5 +1,4 @@
 require "./hand.rb"
-require "pry"
 
 class Player
 
@@ -14,7 +13,7 @@ class Player
 
   def bet
     rxp = /\d+/
-    msg = "What is your bet?: $"
+    msg = "What is your bet? $"
     print msg
     bet = gets.chomp
     until rxp === bet && bet.to_i <= @wallet do
