@@ -88,8 +88,8 @@ describe Hand do
   end
 
   it "knows the value of a hand with multiple aces" do
-    @hand.add_card(Card.new(:A, :H), Card.new(:A, :S))
-    assert_equal 12, @hand.get_value
+    @hand.add_card(Card.new(:A, :H), Card.new(:A, :S), Card.new(:A, :C))
+    assert_equal 13, @hand.get_value
   end
 
 end
