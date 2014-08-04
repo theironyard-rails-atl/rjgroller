@@ -5,8 +5,7 @@ class Hand
   @@bj_values = (2..9).to_a + Array.new(4, 10) + [11]
   @@card_values = $ranks.zip(@@bj_values).to_h
 
-  attr_accessor :hand
-  attr_accessor :stand
+  attr_accessor :hand, :stand
 
   def initialize
     @hand = Array.new
@@ -15,7 +14,7 @@ class Hand
   end
 
   def add_card(*cards)
-    cards.each { |card| @hand << card }
+    @hand += cards
   end
 
   def get_value
@@ -46,11 +45,6 @@ class Hand
 
   def busted?
     get_value > 21
-  end
-
-  def stand?
-    # Dealer/Player autostand
-    get_value >= 17
   end
 
 end

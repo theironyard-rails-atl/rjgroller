@@ -1,4 +1,4 @@
-%w{cards hand player}.each { |fname| require "./#{fname}.rb" }
+%w{cards hand person}.each { |fname| require "./#{fname}.rb" }
 require "pry"
 
 class Blackjack
@@ -12,14 +12,17 @@ class Blackjack
   def initialize
     @deck = Deck.new
     @deck.shuffle
+    @dealer = Dealer.new
     @player = Player.new(100)
+    binding.pry
     @invalid_msg = "Please enter a valid response."
     @continue = true
     @stand = false
+    binding.pry
   end
 
   def display
-    if @dealer.blackjack? || @player.hand.stand
+    if @dealer.blackjack? || @player.stand
       msg = "Dealer has #{@dealer.to_s}"
     else
       msg = "Dealer is showing #{@dealer.hand[1]}"
@@ -58,17 +61,17 @@ class Blackjack
 
     # Create hands
     @player.hand = Hand.new
-    @dealer = Hand.new
+    @dealer.hand = Hand.new
 
     # Deal 2 cards each to a player and the dealer
     2.times do |x|
       @player.hand.add_card(deck.deal_card)
-      @dealer.add_card(deck.deal_card)
+      @dealer.hit(deck.deal_card)
     end
   end
 
   def blackjacks?
-      @dealer.blackjack? || @player.hand.blackjack?
+      @dealer.hand.blackjack? || @player.hand.blackjack?
   end
 
   def continue?
@@ -89,9 +92,9 @@ class Blackjack
     lose_msg = "Dealer wins this round."
     push_msg = "A push! No winner this round."
     if blackjacks?
-      if @player.hand.blackjack? == @dealer.blackjack?
+      if @player.hand.blackjack? == @dealer.hand.blackjack?
         puts "Blackjack! But wait you aren't alone. " + push_msg
-      elsif @dealer.blackjack?
+      elsif @dealer.hand.blackjack?
         puts "Dealer has a blackjack. " + lose_msg
         @player.wallet -= @player.wager
       else
@@ -101,13 +104,13 @@ class Blackjack
     elsif @player.hand.busted?
       puts "You busted. " + lose_msg
       @player.wallet -= @player.wager
-    elsif  @dealer.busted?
+    elsif  @dealer.hand.busted?
       puts "Dealer busted. " + win_msg
       @player.wallet += @player.wager
-    elsif @player.hand.get_value < @dealer.get_value
+    elsif @player.hand.get_value < @dealer.hand.get_value
       puts lose_msg
       @player.wallet -= @player.wager
-    elsif @player.hand.get_value > @dealer.get_value
+    elsif @player.hand.get_value > @dealer.hand.get_value
       puts win_msg
       @player.wallet += @player.wager
     else
@@ -134,4 +137,64 @@ class Blackjack
   # Additional blackjack actions for future adds: insurance, surrender, split, double
   # Allow for different dealer logic (soft 17)
 
+  def round
+    system "clear"
+    puts
+    puts "Welcome to a Blackjack Table! Let's play."
+    puts
+
+    # Play until player does not wish to continue or has an empty wallet
+    until !continue
+
+      # Does deck need a reshuffle?
+      reshuffle?
+
+      # Deal and show cards
+      deal
+      display
+
+      # Skip to resolution if dealer or player has a blackjack
+      if !blackjacks?
+
+        # If no blackjacks then Player goes first
+        until player.hand.stand || player.hand.busted? do
+          if !hit?
+            player.stand
+          else
+            player.hand.add_card(deck.deal_card)
+            display
+          end
+        end
+
+        # If player stood then...
+        if player.stand
+          display
+
+          # ...the Dealer Goes
+          until dealer.stand? || dealer.hand.busted? do
+            puts "Dealer hits..."
+            dealer.hit(deck.deal_card)
+            display
+          end
+        end
+      end
+
+      # Round Resolution
+      resolve_round
+
+      # Check wallet and ask to continue
+      if wallet_empty?
+        puts "You are out of money, thanks for playing. Goodbye."
+        exit
+      else
+        continue?
+        system "clear"
+      end
+    end
+    end_game
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  Blackjack.new.run
 end

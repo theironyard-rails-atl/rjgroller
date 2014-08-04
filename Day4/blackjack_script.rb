@@ -25,7 +25,7 @@ until !game.continue
     # If no blackjacks then Player goes first
     until game.player.hand.stand || game.player.hand.busted? do
       if !game.hit?
-        game.player.hand.stand = true
+        game.player.stand
       else
         game.player.hand.add_card(game.deck.deal_card)
         game.display
@@ -33,13 +33,13 @@ until !game.continue
     end
 
     # If player stood then...
-    if game.player.hand.stand
+    if game.player.stand
       game.display
 
       # ...the Dealer Goes
-      until game.dealer.stand? || game.dealer.busted? do
+      until game.dealer.stand? || game.dealer.hand.busted? do
         puts "Dealer hits..."
-        game.dealer.add_card(game.deck.deal_card)
+        game.dealer.hit(game.deck.deal_card)
         game.display
       end
     end
