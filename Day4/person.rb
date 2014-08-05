@@ -19,7 +19,7 @@ class Player < Person
 
   def initialize(starting_money)
     @wallet = starting_money
-    super
+    super()
   end
 
   def bet
@@ -40,9 +40,28 @@ class Player < Person
     "You have $#{@wallet} in your wallet"
   end
 
-  def stand
+  def stood
     @hand.stand = true
   end
+
+  def broke?
+    @wallet == 0
+  end
+
+  def hit?
+    # Prompt user for action
+    rxp = /[sS|hH]/
+    msg = "Would you like to (S)tand or (H)it?"
+    puts msg
+    choice = gets.upcase.chomp[0]
+    until rxp =~ choice
+      puts @invalid_msg
+      msg
+      choice = gets.upcase.chomp[0]
+    end
+    choice == "H" ? true : false
+  end
+
 end
 
 class Dealer < Person

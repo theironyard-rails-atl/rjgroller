@@ -14,41 +14,21 @@ class Blackjack
     @deck.shuffle
     @dealer = Dealer.new
     @player = Player.new(100)
-    binding.pry
     @invalid_msg = "Please enter a valid response."
     @continue = true
     @stand = false
-    binding.pry
   end
 
   def display
-    if @dealer.blackjack? || @player.stand
-      msg = "Dealer has #{@dealer.to_s}"
+    if @dealer.hand.blackjack? || @player.hand.stand
+      msg = "Dealer has #{@dealer.hand.to_s}"
     else
-      msg = "Dealer is showing #{@dealer.hand[1]}"
+      msg = "Dealer is showing #{@dealer.hand}"
     end
     puts msg
     msg = "You have #{@player.hand.to_s}"
     puts msg
     puts
-  end
-
-  def wallet_empty?
-    @player.wallet == 0
-  end
-
-  def hit?
-    # Prompt user for action
-    rxp = /[sS|hH]/
-    msg = "Would you like to (S)tand or (H)it?"
-    puts msg
-    choice = gets.upcase.chomp[0]
-    until rxp =~ choice
-      puts @invalid_msg
-      msg
-      choice = gets.upcase.chomp[0]
-    end
-    choice == "H" ? true : false
   end
 
   def deal
@@ -123,6 +103,7 @@ class Blackjack
 
   def end_game
     msg = "Your final winnings are: #{@player.wallet}. Thanks for playing!"
+    puts msg
     exit
   end
 
@@ -137,7 +118,7 @@ class Blackjack
   # Additional blackjack actions for future adds: insurance, surrender, split, double
   # Allow for different dealer logic (soft 17)
 
-  def round
+  def run
     system "clear"
     puts
     puts "Welcome to a Blackjack Table! Let's play."
@@ -157,23 +138,23 @@ class Blackjack
       if !blackjacks?
 
         # If no blackjacks then Player goes first
-        until player.hand.stand || player.hand.busted? do
-          if !hit?
-            player.stand
+        until @player.hand.stand || @player.hand.busted? do
+          if !@player.hit?
+            @player.stood
           else
-            player.hand.add_card(deck.deal_card)
+            @player.hit(deck.deal_card)
             display
           end
         end
 
         # If player stood then...
-        if player.stand
+        if @player.hand.stand
           display
 
           # ...the Dealer Goes
-          until dealer.stand? || dealer.hand.busted? do
+          until @dealer.stand? || @dealer.hand.busted? do
             puts "Dealer hits..."
-            dealer.hit(deck.deal_card)
+            @dealer.hit(deck.deal_card)
             display
           end
         end
@@ -183,7 +164,7 @@ class Blackjack
       resolve_round
 
       # Check wallet and ask to continue
-      if wallet_empty?
+      if @player.broke?
         puts "You are out of money, thanks for playing. Goodbye."
         exit
       else
