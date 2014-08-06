@@ -51,3 +51,4 @@ class WidgetStats
 
 end
 
+# for each deptartment key in department get the units sold for each widget and sum them to get the total.
