@@ -4,20 +4,21 @@ require './widgets.rb'
 class WidgetReport
   include Enumerable
 
-  attr_reader :raw_data, :widget, :grouped_by_dept
+  attr_reader :raw_data, :widgets, :grouped_by_dept
 
   def initialize(fname)
     @raw_data = YAML.load_file(fname)
-    @widgets = @raw_data.map { |widget| Widget.new(widget) }
-    @grouped_by_dept = @widgets.group_by { |widget| widget.department } 
+    # @raw_data = YAML.load_file(fname)
+    # @widgets = @raw_data.map { |widget| Widget.new(widget) }
+    # @grouped_by_dept = @widgets.group_by { |widget| widget.department } 
     # @raw_data = YAML.load_file('widgets.yml')
   end
 
   def units_sold_per_dept
-    @grouped_by_dept.each do |dept, widget|  
-      @widgets.reduce(0) do |sum, widget|
-        sum + widget.sold
-      end
+    # Take the array of hash and reduce to a hash of each department to units sold
+    @raw_data.inject(Hash.new(0)) do |hash, widget|
+      hash[widget[:department]] += widget[:sold]
+      hash
     end
   end
 
