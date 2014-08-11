@@ -1,0 +1,13 @@
+!!! 5
+%html
+  %head
+    %link{:href=>"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", :rel=>"stylesheet"}
+  %body
+    %ul.nav.nav-tabs{:role => "tablist"}
+      %li.active
+        %a{:href => "/main"} Home
+      %li
+        %a{:href => "/backwards"} Backwords
+      %li
+        %a{:href => "/screaming"} Screaming Words
+    =yield

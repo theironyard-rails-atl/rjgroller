@@ -1,0 +1,9 @@
+%h1 Backwords
+.content
+  %form{:action => "/backwards", :method => "post", :name => "input"}
+    Word:
+    %input{:name => "word", :type => "text"}
+    %input{:type => "submit", :value => "Submit"}
+.jumbotron
+  %h1
+    =@word

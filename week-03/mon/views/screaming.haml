@@ -1,0 +1,9 @@
+%h1 Loud Words
+.content
+  %form{:action => "/screaming", :method => "post", :name => "input"}
+    Word:
+    %input{:name => "word", :type => "text"}
+    %input{:type => "submit", :value => "Submit"}
+.jumbotron
+  %h1
+    =@word

@@ -2,11 +2,24 @@
 require 'sinatra'
 require 'haml'
 
-get '/' do
+get '/main' do
   haml :main
 end
 
-post '/' do
-  @word = params[:word].reverse
-  haml :main
+get '/backwards' do
+  haml :backwards
+end
+
+post '/backwards' do
+  @word = params[:word].chomp.reverse
+  haml :backwards
+end
+
+get '/screaming' do
+  haml :screaming
+end
+
+post '/screaming' do
+  @word = params[:word].chomp.upcase
+  haml :screaming
 end
