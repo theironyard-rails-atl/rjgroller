@@ -2,16 +2,24 @@
 %html
   %head
     %link{:href=>"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", :rel=>"stylesheet"}
+    %script{:src=>"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"}
   %body
+    / Navigation
     %ul.nav.nav-tabs{:role => "tablist"}
       %li.active
-        %a{:href => "/main"} Home
+        %a{:href => "/main", :role => "tab", "data-toggle" => "tab"} Home
       %li
-        %a{:href => "/backwards"} Backwords
+        %a{:href => "/backwards", :role => "tab", "data-toggle" => "tab"} Backwords
       %li
-        %a{:href => "/screaming"} Screaming Words
+        %a{:href => "/screaming", :role => "tab", "data-toggle" => "tab"} Screaming Words
       %li
-        %a{:href => "/shifty"} Shifty Words
+        %a{:href => "/shifty", :role => "tab", "data-toggle" => "tab"} Shifty Words
+    / Tabs
+    .tab-content
+      #main.tab-pane.active 
+      #backwards.tab-pane 
+      #screaming.tab-pane 
+      #shifty.tab-pane 
     =yield
     .jumbotron
       %h1

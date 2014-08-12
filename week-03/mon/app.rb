@@ -1,9 +1,9 @@
 # Homework: Learning about Sinatra
 require 'sinatra'
 require 'haml'
-require './shift.rb'
+require './lib/shift.rb'
 
-get '/main' do
+get '/' do
   haml :main
 end
 
