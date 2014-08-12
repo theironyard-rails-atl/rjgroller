@@ -1,0 +1,16 @@
+%table
+  %thead
+    %tr
+      %th Name
+      %th Size
+      %th Description
+      %th Created At
+      %th Updated At
+  %tbody
+    - @repos.each do |repo|
+      %tr
+        %td
+          %td= repo.size
+          %td= repo.description
+          %td= repo.created_at
+          %td= repo.updated_at
