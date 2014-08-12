@@ -10,4 +10,11 @@
         %a{:href => "/backwards"} Backwords
       %li
         %a{:href => "/screaming"} Screaming Words
+      %li
+        %a{:href => "/shifty"} Shifty Words
     =yield
+    .jumbotron
+      %h1
+        -if @word != nil
+          =@word
+

@@ -1,6 +1,7 @@
 # Homework: Learning about Sinatra
 require 'sinatra'
 require 'haml'
+require './shift.rb'
 
 get '/main' do
   haml :main
@@ -23,3 +24,20 @@ post '/screaming' do
   @word = params[:word].chomp.upcase
   haml :screaming
 end
+
+get '/shifty' do
+  haml :shifty
+end
+
+post '/shifty' do
+  @catch = params[:word].chomp.upcase
+  if params[:action] == "Left"
+    @word = Shift.new(@catch).left
+    @word
+  else
+    @word = Shift.new(@catch).right
+    @word
+  end
+  haml :shifty
+end
+

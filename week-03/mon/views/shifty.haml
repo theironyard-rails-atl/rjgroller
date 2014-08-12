@@ -1,0 +1,7 @@
+%h1 Shifty
+.content
+  %form{:action => "/shifty", :method => "post", :name => "input"}
+    Word:
+    %input{:name => "action", :type => "submit", :value => "Left"}
+    %input{:name => "word", :type => "text"}
+    %input{:name => "action", :type => "submit", :value => "Right"}
