@@ -1,4 +1,4 @@
-%table
+%table.table.table-bordered.table-striped
   %thead
     %tr
       %th Name
@@ -8,9 +8,11 @@
       %th Updated At
   %tbody
     - @repos.each do |repo|
+      - binding.pry
       %tr
         %td
-          %td= repo.size
-          %td= repo.description
-          %td= repo.created_at
-          %td= repo.updated_at
+          %a{href: repo.html_url}= repo.name
+        %td= repo.size
+        %td= repo.description
+        %td= repo.created_at
+        %td= repo.updated_at

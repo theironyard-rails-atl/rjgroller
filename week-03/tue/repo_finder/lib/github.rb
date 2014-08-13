@@ -6,21 +6,38 @@ class Repo
     @data = data
   end
 
-  keys = %w{name html_url description size created_at updated_at}
-  keys.each do |k|
-    define_method(k) do |k|
-      @data[k]
-    end
+  def name
+    @data["name"]
   end
-  binding.pry
+
+  def html_url
+    @data["html_url"]
+  end
+
+  def description
+    @data["description"]
+  end
+
+  def size
+    @data["size"]
+  end
+
+  def created_at
+    @data["created_at"]
+  end
+
+  def updated_at
+    @data["updated_at"]
+  end
 end
 
 class Github
+
   include HTTParty
   base_uri 'https://api.github.com'
 
   def self.repos_for(username)
     response = get "/users/#{username}/repos", headers: { "User-Agent" => "Repo Finder" }
-    response.map { |data| Repo.new data }
+    response.map { |data| Repo.new(data) }
   end
 end
