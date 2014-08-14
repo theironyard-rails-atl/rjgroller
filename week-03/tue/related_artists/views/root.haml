@@ -1,0 +1,19 @@
+.container
+  .row
+    .col-lg-3
+      %form.input-group.custom-search-form
+        %input.form-control{type: "text", name: "artist_name", placeholder: "Enter artist name here", value: @artist} 
+        %span.input-group-btn
+          %button.btn.btn-default{type: "submit"}
+            %span.glyphicon.glyphicon-search
+
+.container  
+  .row
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th Related Artists 
+      %tbody
+        - @related_artists.each do |related_artist|
+          %tr 
+            %td= related_artist.name 
